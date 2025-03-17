@@ -37,6 +37,17 @@ Para mitigar estos riesgos, es fundamental implementar sistemas de detección de
 ---
 
 ## 2. Motivación y Justificación
+<p align="justify"> 
+Actualmente, la detección de incendios en los cerros orientales de Bogotá depende de vigilancia manual o reportes ciudadanos, lo que retrasa la respuesta de las autoridades y agrava los daños ambientales y sociales. Esta falta de monitoreo en tiempo real limita la capacidad de reacción de los organismos de emergencia, aumentando la propagación del fuego y su impacto negativo en la biodiversidad, la calidad del aire y las comunidades aledañas, lo que hace crítica la necesidad de una solución tecnológica eficiente. 
+</p> 
+
+<p align="justify"> 
+Para abordar esta problemática, el proyecto propone la implementación de un sistema basado en Internet de las Cosas que permita un monitoreo continuo del entorno, la activación inmediata de alarmas visuales y sonoras en caso de detectar condiciones de riesgo, además de incorporar un tablero de control web embebido en un ESP32, al cual las autoridades podrán acceder desde un navegador web dentro de la WLAN. A través de esta interfaz, se podrá visualizar en tiempo real el estado de variables ambientales clave, como temperatura, presencia de llamas y concentración de gases. Adicionalmente, el sistema registrará un historial reciente de mediciones y enviará notificaciones de alerta, asegurando una intervención rápida y eficiente ante posibles incendios. 
+</p>
+
+<p align="justify"> 
+Gracias a su arquitectura autónoma, esta solución ofrecerá un sistema de prevención inteligente, con monitoreo accesible y eficiente, permitiendo optimizar los tiempos de respuesta, minimizar el impacto ambiental de los incendios y fortalecer las estrategias de prevención. 
+</p>
 
 ---
 
