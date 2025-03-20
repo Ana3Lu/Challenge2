@@ -55,6 +55,40 @@ Gracias a su arquitectura autónoma, esta solución ofrecerá un sistema de prev
 
 ### Restricciones de Diseño Identificadas
 
+Al desarrollar el sistema IoT para detectar incendios en los cerros orientales de Bogotá, se identificaron varias restricciones que afectan su diseño e implementación:
+
+#### 1. Técnicas
+- Se usa un **ESP32**, el cual tiene un límite en la memoria RAM y el procesamiento, lo que puede afectar la ejecución simultánea del servidor web y la recolección de datos de sensores.
+- Los sensores de **temperatura, gas (MQ-2) y llama** requieren calibración para evitar falsas alarmas, además de que tienen tiempos de respuesta y precisión que pueden influir en la detección temprana de incendios.
+- La alimentación del sistema debe ser autónoma para funcionar sin conexión a la red eléctrica.
+- Para el manejo de hilos, la implementación de múltiples tareas debe estar optimizada para evitar bloqueos del sistema.
+- Dependencia de una conexión estable de Wi-Fi para enviar y visualizar los datos en la interfaz web.
+
+#### 2. Económicas
+- Se busca tratar de minimizar costos en la implementación del sistema, eligiendo sensores asequibles y fáciles de conseguir, pero siendo lo suficientemente confiables y precisos para realizar apropiadamente las mediciones.
+- No se usan tecnologías más avanzadas, debido a su alto precio.
+
+#### 3. Regulatorias
+- Se debe cumplir con normativas ambientales y estándares de seguridad eléctrica para su instalación en entornos protegidos o críticos.
+- Cualquier intervención en los cerros debe ajustarse a regulaciones locales.
+- En algunos casos, podrían existir regulaciones sobre la transmisión de datos y almacenamiento en servidores remotos.
+
+#### 4. Espaciales
+- El sistema debe ser compacto y resistente a condiciones climáticas adversas (lluvia, humedad y polvo).
+- Los sensores deben estar ubicados estratégicamente para detectar cambios de temperatura y gases sin interferencias, maximizando su efectividad sin afectar el ecosistema.
+- Para el montaje del sistema, la integración de la pantalla LCD, los LEDs y los sensores debe ser compacta y accesible.
+
+#### 5. Escalabilidad
+- Aunque es un prototipo, debe permitir mejoras o expansión en el futuro.
+- Si se desean conectar múltiples dispositivos a un mismo servidor, se debe optimizar la comunicación para no saturar la red.
+- Si se requiere monitoreo en varias áreas, se necesitaría una arquitectura que soporte múltiples nodos de sensores.
+
+#### 6. Temporales
+- El sistema debe operar en **tiempo real** para detectar incendios lo más rápido posible.
+- Se debe definir un intervalo adecuado entre lecturas en los sensores para evitar saturación del sistema sin comprometer la detección temprana.
+- Debe ser **autónomo y de bajo mantenimiento**, funcionando sin intervención constante.
+
+  
 ### Arquitectura Propuesta
 
 ### Desarrollo Teórico Modular: Criterios de Diseño Establecidos
