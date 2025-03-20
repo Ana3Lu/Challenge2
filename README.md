@@ -90,12 +90,41 @@ Al desarrollar el sistema IoT para detectar incendios en los cerros orientales d
 
   
 ### Arquitectura Propuesta
+....
+
 
 ### Desarrollo Teórico Modular: Criterios de Diseño Establecidos
 
+Para que el sistema sea eficiente y funcional, se definieron los siguientes criterios de diseño:
+
+#### 1. Fiabilidad y Precisión
+- Se seleccionaron sensores adecuados para la detección confiable sobre temperatura, gases y llamas.
+- Se implementaron límites y filtros dentro del código para reducir errores y evitar falsas alarmas.
+- Se optimizó la adquisición de datos en paralelo mediante hilos, , evitando bloqueos.
+
+#### 2. Autonomía y Eficiencia
+- El sistema es **autosuficiente**, operando sin necesidad de conexión a redes externas para su funcionamiento básico.
+- Su diseño es resistente a la intemperie, minimizando la necesidad de mantenimiento.
+- La separación de tareas en hilos permite una ejecución fluida y sin interrupciones.
+
+#### 3. Interfaz de Usuario Intuitiva
+- Se usa una **pantalla LCD** para mostrar datos en tiempo real.
+- Se integró un servidor web con HTML + JavaScript para visualizar los datos de sensores de forma remota.
+- Se incorporaron gráficos dinámicos con historial de mediciones.
+- Se incluyen **alarmas visuales (LED RGB) y sonoras (zumbador)** para notificaciones inmediatas sobre incendios.
+
+#### 4. Escalabilidad y Modularidad
+- Se diseñó de forma **modular**, permitiendo agregar nuevos sensores o funciones en el futuro.
+- Actualmente, la visualización remota de datos se realiza a través de una interfaz web local.
+- En futuras versiones, se podrían incorporar tecnologías IoT como MQTT para mejorar la comunicación y monitoreo en tiempo real.  
+
 ### Esquemático de Hardware
+...
+
 
 ### Estándares de Ingeniería Aplicados
+...
+
 
 ---
 
