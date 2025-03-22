@@ -42,7 +42,7 @@ Actualmente, la detección de incendios en los cerros orientales de Bogotá depe
 </p> 
 
 <p align="justify"> 
-Para abordar esta problemática, el proyecto propone la implementación de un sistema basado en Internet de las Cosas que permita un monitoreo continuo del entorno, la activación inmediata de alarmas visuales y sonoras en caso de detectar condiciones de riesgo, además de incorporar un tablero de control web embebido en un ESP32, al cual las autoridades podrán acceder desde un navegador web dentro de la WLAN. A través de esta interfaz, se podrá visualizar en tiempo real el estado de variables ambientales clave, como temperatura, presencia de llamas y concentración de gases. Adicionalmente, el sistema registrará un historial reciente de mediciones y enviará notificaciones de alerta, asegurando una intervención rápida y eficiente ante posibles incendios. 
+Para abordar esta problemática, el proyecto propone la implementación de un sistema basado en Internet de las Cosas que permita un monitoreo continuo del entorno y la activación inmediata de alarmas visuales y sonoras en caso de detectar condiciones de riesgo. Además, incorpora un tablero de control web embebido en un ESP32, al cual las autoridades podrán acceder desde un navegador web dentro de la WLAN. A través de esta interfaz, se pueden visualizar en tiempo real el estado de las variables ambientales clave, como temperatura, presencia de llamas y concentración de gases, asi como poder llegar a apagar remotamente estas alarmas físicas y enviar notificaciones de alerta, asegurando una intervención rápida y eficiente ante posibles incendios. 
 </p>
 
 <p align="justify"> 
@@ -61,7 +61,7 @@ Al desarrollar el sistema IoT para detectar incendios en los cerros orientales d
 - Se usa un **ESP32**, el cual tiene un límite en la memoria RAM y el procesamiento, lo que puede afectar la ejecución simultánea del servidor web y la recolección de datos de sensores.
 - Los sensores de **temperatura, gas (MQ-2) y llama** requieren calibración para evitar falsas alarmas, además de que tienen tiempos de respuesta y precisión que pueden influir en la detección temprana de incendios.
 - La alimentación del sistema debe ser autónoma para funcionar sin conexión a la red eléctrica.
-- Para el manejo de hilos, la implementación de múltiples tareas debe estar optimizada para evitar bloqueos del sistema.
+- Para la gestión de múltiples tareas, se implementó un enfoque optimizado que permite la adquisición de datos sin afectar la estabilidad del sistema.
 - Dependencia de una conexión estable de Wi-Fi para enviar y visualizar los datos en la interfaz web.
 
 #### 2. Económicas
@@ -100,12 +100,12 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 #### 1. Fiabilidad y Precisión
 - Se seleccionaron sensores adecuados para la detección confiable sobre temperatura, gases y llamas.
 - Se implementaron límites y filtros dentro del código para reducir errores y evitar falsas alarmas.
-- Se optimizó la adquisición de datos en paralelo mediante hilos, , evitando bloqueos.
+- Se optimizó la adquisición de datos para minimizar bloqueos y garantizar mediciones en tiempo real.
 
 #### 2. Autonomía y Eficiencia
 - El sistema es **autosuficiente**, operando sin necesidad de conexión a redes externas para su funcionamiento básico.
 - Su diseño es resistente a la intemperie, minimizando la necesidad de mantenimiento.
-- La separación de tareas en hilos permite una ejecución fluida y sin interrupciones.
+- Se implementó una separación de tareas para permitir una ejecución fluida, evitando interrupciones en la adquisición de datos y la respuesta del sistema.
 
 #### 3. Interfaz de Usuario Intuitiva
 - Se usa una **pantalla LCD** para mostrar datos en tiempo real.
