@@ -123,8 +123,19 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 
 
 ### Estándares de Ingeniería Aplicados
-...
 
+Para garantizar que el sistema desarrollado sea seguro, eficiente y cumpla con principios de calidad, se han aplicado diversos estándares de ingeniería en diferentes áreas del proyecto:
+
+#### 1. Sensores y Electrónica
+- **IEEE 1451**: Se siguieron principios de interoperabilidad para la integración de sensores en el sistema IoT, asegurando compatibilidad y escalabilidad.
+- **ISO 9001**: Se aplicaron criterios de calidad en la selección de componentes electrónicos y en la estructuración del proceso de desarrollo, priorizando confiabilidad y precisión.
+
+#### 2. Programación y Software
+- **Arduino Coding Standards**:  Se adoptaron buenas prácticas en la escritura del código para mejorar la legibilidad, mantenibilidad y eficiencia del software en el ESP32.
+- **Optimización de la adquisición de datos:** Se implementó un mecanismo para gestionar la lectura de sensores sin bloquear otras funciones del sistema.
+
+#### 3. Modelado y Documentación
+- **UML (ISO/IEC 19501)**: Se utilizaron diagramas UML para representar la estructura y el flujo de datos dentro del sistema, facilitando la organización y documentación del proyecto.
 
 ---
 
