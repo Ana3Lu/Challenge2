@@ -247,9 +247,11 @@ En general, el sistema mostró un desempeño estable y coherente con las expecta
 <p align="justify"> 
 El sistema demostró ser funcional y eficiente en la detección de condiciones de riesgo asociadas a incendios forestales, cumpliendo con los objetivos principales del proyecto. A pesar de las limitaciones encontradas —particularmente en la visualización del histórico de datos y la calibración del sensor MQ-2— se implementaron soluciones efectivas para mantener la estabilidad y fiabilidad del sistema. El desarrollo del tablero de control basado en un servidor web embebido en el ESP32, con lectura en tiempo real, representa un avance importante hacia la aplicación del sistema en escenarios reales. 
 </p> 
+
 <p align="justify"> 
 Para trabajos futuros, se recomienda enfocar esfuerzos en la mejora de la persistencia y visualización de datos históricos, así como en el refinamiento de la interfaz web y la lógica de detección. Estas mejoras permitirán robustecer el sistema y aumentar su aplicabilidad en campo, aportando a la mitigación oportuna de incendios forestales en los cerros orientales de Bogotá.
 </p>
+
 ---
 
 ## 6. Conclusiones, Retos y Mejoras Futuras
