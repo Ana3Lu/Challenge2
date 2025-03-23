@@ -165,11 +165,15 @@ Durante la implementación del sistema, se probaron dos enfoques para la adminis
 
 Tras la ejecución de los experimentos, se obtuvieron los siguientes resultados:
 
-#### Comportamiento del Sistema
-Los sensores mostraron un desempeño estable y respondieron dentro de los umbrales definidos:
-- **Temperatura:** El sensor DS18B20 detectó variaciones con precisión. Se estableció un umbral de **24°C** como temperatura máxima antes de generar una alerta. También se identificó un aumento rápido de temperatura de **0.5°C** como criterio adicional de alarma.
-- **Gas MQ-2:** Se definió un umbral de **3200 PPM**, a partir del cual se activaron las alarmas visuales y sonoras.
-- **Sensor de flama:** La respuesta fue inmediata al detectar fuego, activando el LED RGB en rojo y el buzzer.
+#### Comportamiento del Sistema  
+Los sensores mostraron un desempeño estable y respondieron dentro de los umbrales definidos, los cuales fueron determinados con base en pruebas experimentales realizadas en un entorno de laboratorio. Inicialmente, se llevaron a cabo múltiples mediciones para analizar el comportamiento de los sensores en condiciones normales y bajo estímulos controlados. A partir de estos ensayos, se establecieron umbrales óptimos que minimizan falsas alarmas y garantizan una respuesta efectiva ante posibles incendios.  
+
+- **Temperatura:** El sensor DS18B20 detectó variaciones con precisión. Se estableció un umbral de **24°C** como temperatura máxima antes de generar una alerta, considerando que en el laboratorio se registraban temperaturas normales entre **18°C y 22°C**. Se determinó que superar los **24°C** en este contexto era un indicio de un aumento anómalo de temperatura. Además, se definió un incremento abrupto de **0.5°C** en un corto período como un criterio adicional de alarma, basado en pruebas donde se observó que los incendios incipientes generan aumentos rápidos de temperatura.  
+
+- **Gas MQ-2:** Se fijó un umbral de **3200** tras evaluar diferentes concentraciones de gas en el ambiente del laboratorio. Se identificó que valores superiores a **3200** eran consistentes con la presencia de sustancias combustibles en niveles peligrosos, lo que justifica la activación de las alarmas visuales y sonoras.  
+
+- **Sensor de flama:** La respuesta fue inmediata al detectar fuego, activando el LED RGB en rojo y el buzzer.Este comportamiento fue validado con distintas intensidades de fuego, asegurando que el sensor no reaccionara ante luces intensas que no representaran un riesgo real.  
+
 
 #### Tiempo de Respuesta
 Se midió el tiempo de reacción del sistema desde la detección hasta la activación de las alarmas. En promedio:
