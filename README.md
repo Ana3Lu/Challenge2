@@ -141,7 +141,53 @@ Para garantizar que el sistema desarrollado sea seguro, eficiente y cumpla con p
 
 ## 4. Configuración Experimental, Resultados y Análisis
 
----
+
+### Configuración Experimental
+
+Para validar el funcionamiento del prototipo de detección de incendios en los cerros orientales de Bogotá, se llevó a cabo una serie de pruebas experimentales en un entorno controlado. Se utilizó el simulador Wokwi para verificar la conectividad y respuesta de los sensores y actuadores antes de la implementación física. Posteriormente, se realizaron pruebas en un entorno físico con diferentes condiciones ambientales. Además, se evaluó el funcionamiento del servidor web embebido en el ESP32 y la administración de tareas concurrentes.
+
+### Entorno de Prueba
+El experimento se realizó en tres fases:
+
+1. **Simulación en Wokwi:** Se configuró el circuito virtual con el ESP32, los sensores DS18B20, MQ-2 y de flama, y los actuadores buzzer, LED RGB y LCD I2C. Se verificó la transmisión de datos al tablero de control web embebido en el ESP32.
+
+2. **Pruebas físicas:** Se ensambló el circuito en un protoboard y se expuso a diferentes estímulos:
+   - **Simulación de aumento de temperatura:** Uso de una fuente de calor para verificar la activación del umbral de temperatura.
+   - **Simulación de gas inflamable:** Exposición controlada a gas butano para evaluar la respuesta del sensor MQ-2.
+   - **Simulación de llama:** Uso de un encendedor para probar la detección de fuego.
+   - **Pruebas de actuadores:** Se validó la activación de alarmas (buzzer y LED RGB) y la correcta visualización en el LCD.
+
+3. **Validación del Tablero de Control Web:** Se configuró la conectividad WiFi en el ESP32 y se accedió al servidor web embebido desde un navegador en PC y teléfono móvil. Se verificó la visualización de variables en tiempo real, el almacenamiento de un historial reciente y la capacidad de desactivar alarmas remotamente. Se observó que el tiempo de respuesta en la página web fue en promedio de 4 a 5 segundos, lo que puede optimizarse mejorando la administración de procesos y la comunicación con el ESP32. Se identificó que la latencia en la actualización del tablero se debe en parte a la estructura del código HTML/JavaScript y al manejo de tareas en el ESP32.
+
+Durante la implementación del sistema, se probaron dos enfoques para la administración de tareas concurrentes: **FreeRTOS y Task Scheduler**. Aunque FreeRTOS permite el uso de hilos y una gestión más avanzada de tareas, se observó que el código más estable fue el que utilizó Task Scheduler, a pesar de que este no implementa hilos. Esto se debe a que Task Scheduler maneja tareas de forma más sencilla y con menor sobrecarga en el ESP32, asegurando una ejecución fluida sin bloqueos.
+
+### Resultados y Análisis
+
+Tras la ejecución de los experimentos, se obtuvieron los siguientes resultados:
+
+#### Comportamiento del Sistema
+Los sensores mostraron un desempeño estable y respondieron dentro de los umbrales definidos:
+- **Temperatura:** El sensor DS18B20 detectó variaciones con precisión. Se estableció un umbral de **24°C** como temperatura máxima antes de generar una alerta. También se identificó un aumento rápido de temperatura de **0.5°C** como criterio adicional de alarma.
+- **Gas MQ-2:** Se definió un umbral de **3200 PPM**, a partir del cual se activaron las alarmas visuales y sonoras.
+- **Sensor de flama:** La respuesta fue inmediata al detectar fuego, activando el LED RGB en rojo y el buzzer.
+
+#### Tiempo de Respuesta
+Se midió el tiempo de reacción del sistema desde la detección hasta la activación de las alarmas. En promedio:
+- **Temperatura:** 2 segundos
+- **Gas:** 1 segundo
+- **Llama:** 1 segundo
+- **Actualización en el tablero de control:** 4 - 5 segundos
+
+Estos tiempos de respuesta cumplen con los requerimientos de un sistema de alerta temprana, aunque la latencia del tablero de control podría mejorarse.
+
+### Análisis de Resultados
+Los resultados demuestran que el sistema es funcional para la detección temprana de incendios. Se identificaron algunos aspectos a mejorar:
+- **Optimización del consumo energético:** Se observó un consumo elevado cuando todos los actuadores estaban activos simultáneamente.
+- **Interferencias ambientales:** En entornos con humo denso, el sensor de gas MQ-2 presentó ligeras fluctuaciones en la lectura.
+- **Fiabilidad en campo abierto:** Se recomienda realizar pruebas en ubicaciones reales para validar la precisión del sistema en condiciones de viento y humedad variables.
+- **Optimización del servidor web:** La latencia de actualización del tablero de control (4 - 5 segundos) puede mejorarse optimizando el manejo de tareas y revisando la eficiencia del código HTML/JavaScript en la actualización de datos.
+- **Dificultades de conexión:** Durante las pruebas, la conexión con el ESP32 presentó dificultades ocasionales, posiblemente debido a la demora en la compilación del código en Arduino IDE y a la estabilidad de la red WiFi.
+- **Administración de tareas:** Aunque se probó inicialmente FreeRTOS para la gestión de hilos y tareas concurrentes, se encontró que el código basado en Task Scheduler fue más eficiente y estable en este caso. Task Scheduler permitió una ejecución más predecible sin bloqueos en el sistema, mientras que FreeRTOS presentó ciertas dificultades en la sincronización de tareas.
 
 ## 5. Autoevaluación del Protocolo de Pruebas
 
