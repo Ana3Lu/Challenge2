@@ -196,10 +196,28 @@ Los resultados demuestran que el sistema es funcional para la detección tempran
 ## 6. Conclusiones, Retos y Mejoras Futuras
 
 ### Conclusiones
+El desarrollo del prototipo de detección de incendios en los cerros orientales de Bogotá demostró la viabilidad de un sistema autónomo, compacto y eficiente para la identificación temprana de incendios. Se logró la integración exitosa de sensores de temperatura, gas y flama con actuadores de alerta visual y sonora, permitiendo una respuesta rápida ante posibles focos de incendio.
 
-### Retos Presentados Durante el Desarrollo del Proyecto
+La implementación de un tablero de control web embebido en el ESP32 brindó una herramienta útil para la monitorización remota, facilitando la supervisión en tiempo real y la gestión de alarmas. A través de pruebas en simulación y entornos físicos, se confirmó que el sistema responde en tiempos adecuados, garantizando una detección oportuna.
 
-### Trabajo Futuro
+Sin embargo, se identificaron oportunidades de mejora en términos de optimización del consumo energético, estabilidad de la conectividad WiFi y reducción de la latencia en la actualización de datos. A pesar de estos desafíos, el prototipo cumple con los objetivos planteados y sienta las bases para futuras mejoras e implementaciones en escenarios reales.
+
+
+### Retos Presentados Durante el Desarrollo del Proyecto  
+Durante el desarrollo del proyecto, se enfrentaron diversos desafíos técnicos y de implementación, entre ellos:  
+- **Optimización del consumo energético:** Se identificó un alto consumo cuando varios actuadores estaban activados simultáneamente.  
+- **Interferencias ambientales:** En presencia de humo denso, el sensor MQ-2 mostró variaciones en las mediciones.  
+- **Conectividad WiFi inestable:** Se presentaron dificultades ocasionales en la comunicación con el ESP32, lo que afectó la actualización del tablero de control.  
+- **Latencia en la actualización de datos:** El tiempo de respuesta del tablero de control web varió entre 4 y 5 segundos, lo que podría optimizarse mejorando la gestión de tareas concurrentes en el ESP32.  
+- **Gestión de tareas concurrentes:** Aunque se probó FreeRTOS para administrar múltiples procesos, Task Scheduler ofreció un mejor rendimiento y estabilidad.  
+
+### Trabajo Futuro  
+Para mejorar y escalar el sistema, se proponen las siguientes acciones:  
+- **Optimización de la eficiencia energética:** Explorar el uso de modos de ahorro de energía en el ESP32 y sensores de bajo consumo.  
+- **Pruebas en campo real:** Evaluar el rendimiento del sistema en condiciones ambientales extremas, incluyendo viento y humedad.  
+- **Mejoras en la conectividad:** Implementar redundancia en la comunicación para garantizar una conexión más estable.  
+- **Reducción de latencia:** Optimizar la estructura del código HTML/JavaScript del tablero de control para mejorar la velocidad de actualización.  
+- **Integración con inteligencia artificial:** Implementar algoritmos de machine learning para mejorar la precisión en la detección de incendios y reducir falsas alarmas.  
 
 ---
 
