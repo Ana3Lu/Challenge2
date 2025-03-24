@@ -136,6 +136,24 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 
 ### Diagrama UML
 
+La siguiente figura ilustra el Diagrama de Actividad UML de la solución propuesta, donde se representa el flujo de ejecución del sistema de monitoreo y alerta. Para una mejor visualización, se proporciona un enlace adicional:
+
+![Diagrama de actividades de la solución](Diagramas/DiagramaActividades.png)
+*Figura 2: Diagrama UML de actividades de la solución propuesta.*
+
+- ***Link para mejor visualización del diagrama:*** https://www.canva.com/design/DAGirJpfGvo/iahywiuk-EanTBXkgE06xw/view?utm_content=DAGirJpfGvo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha8dcd33791
+
+Este diagrama representa el flujo de ejecución del sistema, abarcando desde la inicialización hasta la activación de los actuadores, la comunicación con el servidor y la visualización de datos en el cliente web. Para organizar mejor este proceso, el sistema se divide en cinco partes principales:
+- **Entorno y flujo principal:** Configura los pines de entrada y salida, inicializa la pantalla LCD, el sensor de temperatura y establece las variables globales de estado. También inicia el servidor web para permitir la comunicación con el cliente web.
+- **Módulo de sensado:** En un segundo hilo, recoge información de los sensores de temperatura (DS18B20), gas (MQ-2) y llama, asegurando mediciones precisas del entorno.
+- **Módulo de procesamiento:** Analiza los datos de los sensores y determina si las condiciones son seguras o si es necesario activar una alerta. Se aplican reglas de decisión basadas en umbrales predefinidos, clasificando la situación en dos posibles estados: normal o en alerta. Además, se registran los valores de temperatura y se encarga de respetar la duración establecida para las alertas.
+- **Módulo de actuadores:** Si se detecta una alerta específica o de incendio, se activa la alarma poniendo el LED RGB en color rojo (indicando nivel de riesgo) y activando el buzzer para generar una advertencia sonora. En caso contrario, se desactiva este último y el LED toma un color verde.
+- **Módulo de visualización:** Muestra la temperatura actual y el estado del entorno que detecta el sistema en la pantalla LCD y en la interfaz web del usuario.
+
+Además, el sistema ahora cuenta con un Cliente Web, que permite a los usuarios monitorear las mediciones en tiempo real y apagar la alarma si ha sido activada. El servidor web recibe solicitudes HTTP GET desde el navegador para actualizar datos y gestionar la alarma.
+
+Finalmente, una vez completadas todas estas acciones, el sistema espera 1000 ms antes de repetir el ciclo, permitiendo un monitoreo constante y en tiempo real.
+
 
 ### Esquemático de Hardware
 
