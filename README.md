@@ -202,33 +202,45 @@ Para garantizar que el sistema desarrollado sea seguro, eficiente y cumpla con p
 
 Para validar el funcionamiento del prototipo de detección de incendios en los cerros orientales de Bogotá, se llevó a cabo una serie de pruebas experimentales en un entorno controlado. Se utilizó el simulador Wokwi para verificar la conectividad y respuesta de los sensores y actuadores antes de la implementación física. Posteriormente, se realizaron pruebas en un entorno físico con diferentes condiciones ambientales. Además, se evaluó el funcionamiento del servidor web embebido en el ESP32 y la administración de tareas concurrentes.
 
+Para validar el funcionamiento del prototipo de detección de incendios en los cerros orientales de Bogotá, se llevaron a cabo pruebas experimentales en un entorno controlado. Inicialmente, se utilizó el simulador Wokwi para verificar la conectividad y respuesta de los sensores y actuadores antes de la implementación física. Luego, se realizaron pruebas en hardware utilizando TaskScheduler para la administración de tareas. Posteriormente, se desarrolló una versión mejorada del sistema basada en FreeRTOS, la cual fue validada en simulación y se considera la solución óptima por su capacidad de gestionar el sensado en segundo plano mediante hilos.
+
+Además, se realizaron pruebas en un entorno físico con diferentes condiciones ambientales, y se evaluó el funcionamiento del servidor web embebido en el ESP32 y la administración de tareas concurrentes, analizando el rendimiento del sistema en términos de latencia y estabilidad.
+
+
 ### Entorno de Prueba
 El experimento se realizó en tres fases:
 
-1. **Simulación en Wokwi:** Se configuró el circuito virtual con el ESP32, los sensores DS18B20, MQ-2 y de flama, y los actuadores buzzer, LED RGB y LCD I2C. Se verificó la transmisión de datos al tablero de control web embebido en el ESP32.
+1. **Simulación en Wokwi:** Se configuró un circuito virtual con el ESP32, los sensores DS18B20, MQ-2 y flama, junto con los actuadores buzzer, LED RGB y LCD I2C. Se verificó la transmisión de datos al tablero de control web embebido en el ESP32 y se evaluó la respuesta del sistema.
 
-2. **Pruebas físicas:** Se ensambló el circuito en un protoboard y se expuso a diferentes estímulos:
-   - **Simulación de aumento de temperatura:** Uso de una fuente de calor para verificar la activación del umbral de temperatura.
-   - **Simulación de gas inflamable:** Exposición controlada a gas butano para evaluar la respuesta del sensor MQ-2.
-   - **Simulación de llama:** Uso de un encendedor para probar la detección de fuego.
+2. **Pruebas físicas con TaskScheduler:** Se ensambló el circuito en un protoboard y se realizaron pruebas en hardware real con diferentes estímulos:
+   - **Simulación de aumento de temperatura:** Se aplicó calor con un encendedor para verificar la activación del umbral de temperatura.
+   - **Simulación de gas inflamable:** Se expuso el sensor MQ-2 al gas generado por el encendedor de forma controlada para evaluar su respuesta.
+   - **Simulación de llama:** Se utilizó un encendedor para probar la detección de fuego.
    - **Pruebas de actuadores:** Se validó la activación de alarmas (buzzer y LED RGB) y la correcta visualización en el LCD.
 
-3. **Validación del Tablero de Control Web:** Se configuró la conectividad WiFi en el ESP32 y se accedió al servidor web embebido desde un navegador en PC y teléfono móvil. Se verificó la visualización de variables en tiempo real, el almacenamiento de un historial reciente y la capacidad de desactivar alarmas remotamente. Se observó que el tiempo de respuesta en la página web fue en promedio de 4 a 5 segundos, lo que puede optimizarse mejorando la administración de procesos y la comunicación con el ESP32. Se identificó que la latencia en la actualización del tablero se debe en parte a la estructura del código HTML/JavaScript y al manejo de tareas en el ESP32.
+3. **Validación del Tablero de Control Web:**
+   - Se configuró la conectividad WiFi en el ESP32 y se accedió al servidor web embebido desde un navegador en PC y teléfono móvil.
+   - Se verificó la visualización de variables en tiempo real, el almacenamiento de un historial reciente y la capacidad de desactivar alarmas remotamente.
+   - Se observó que el tiempo de respuesta promedio en la página web fue de 4 a 5 segundos, lo que puede optimizarse mejorando la administración de procesos y la comunicación con el ESP32.
+   - Se identificó que la latencia en la actualización del tablero se debe en parte a la estructura del código HTML/JavaScript y al manejo de tareas en el ESP32.
 
-Durante la implementación del sistema, se probaron dos enfoques para la administración de tareas concurrentes: **FreeRTOS y Task Scheduler**. Aunque FreeRTOS permite el uso de hilos y una gestión más avanzada de tareas, se observó que el código más estable fue el que utilizó Task Scheduler, a pesar de que este no implementa hilos. Esto se debe a que Task Scheduler maneja tareas de forma más sencilla y con menor sobrecarga en el ESP32, asegurando una ejecución fluida sin bloqueos.
+Inicialmente, la implementación física utilizó **TaskScheduler**, un método sencillo de gestión de tareas que permitió un funcionamiento estable del sistema sin bloqueos. Sin embargo, posteriormente se desarrolló una versión basada en **FreeRTOS**, la cual introduce el uso de hilos para gestionar el sensado en segundo plano, optimizando la eficiencia del sistema.
+
+Aunque la implementación con **TaskScheduler** funcionó correctamente, **FreeRTOS** representa una mejora significativa en la administración de procesos concurrentes, permitiendo una ejecución más eficiente de las tareas críticas del sistema. Por esta razón, **FreeRTOS** se considera la solución preferida, aunque solo se haya validado en simulación hasta el momento en que se grabó el video de la validación del sistema.
 
 ### Resultados y Análisis
 
 Tras la ejecución de los experimentos, se obtuvieron los siguientes resultados:
 
 #### Comportamiento del Sistema  
-Los sensores mostraron un desempeño estable y respondieron dentro de los umbrales definidos, los cuales fueron determinados con base en pruebas experimentales realizadas en un entorno de laboratorio. Inicialmente, se llevaron a cabo múltiples mediciones para analizar el comportamiento de los sensores en condiciones normales y bajo estímulos controlados. A partir de estos ensayos, se establecieron umbrales óptimos que minimizan falsas alarmas y garantizan una respuesta efectiva ante posibles incendios.  
 
-- **Temperatura:** El sensor DS18B20 detectó variaciones con precisión. Se estableció un umbral de **24°C** como temperatura máxima antes de generar una alerta, considerando que en el laboratorio se registraban temperaturas normales entre **18°C y 22°C**. Se determinó que superar los **24°C** en este contexto era un indicio de un aumento anómalo de temperatura. Además, se definió un incremento abrupto de **0.5°C** en un corto período como un criterio adicional de alarma, basado en pruebas donde se observó que los incendios incipientes generan aumentos rápidos de temperatura.  
+Los sensores mostraron un desempeño estable y respondieron dentro de los umbrales definidos, los cuales fueron determinados con base en pruebas experimentales realizadas en un entorno de laboratorio. Para su calibración, se realizaron múltiples mediciones en condiciones normales y bajo estímulos controlados, con el fin de establecer umbrales que minimizaran falsas alarmas y garantizaran una detección efectiva ante posibles incendios. 
 
-- **Gas MQ-2:** Se fijó un umbral de **3200** tras evaluar diferentes concentraciones de gas en el ambiente del laboratorio. Se identificó que valores superiores a **3200** eran consistentes con la presencia de sustancias combustibles en niveles peligrosos, lo que justifica la activación de las alarmas visuales y sonoras.  
+- **Temperatura:** El sensor DS18B20 detectó variaciones con precisión. Se estableció un umbral de **24°C** como temperatura máxima antes de generar una alerta, considerando que aproximadamente en el laboratorio se registraban temperaturas normales entre **20°C y 22°C**. Se determinó que superar los **24°C** en este contexto era un indicio de un aumento anómalo de temperatura. Además, se determinó que un aumento abrupto de **0.5°C** en un corto período representa un cambio significativo que puede indicar un inicio de incendio. Esta decisión se basó en pruebas donde se observó que incendios incipientes generan incrementos rápidos de temperatura en comparación con fluctuaciones ambientales normales.
 
-- **Sensor de flama:** La respuesta fue inmediata al detectar fuego, activando el LED RGB en rojo y el buzzer.Este comportamiento fue validado con distintas intensidades de fuego, asegurando que el sensor no reaccionara ante luces intensas que no representaran un riesgo real.  
+- **Gas MQ-2:** Se fijó un umbral de **3200**, determinado tras exponer el sensor a distintas concentraciones de gas en el ambiente del laboratorio. Se identificó que valores superiores a este límite eran consistentes con la presencia de sustancias inflamables en niveles peligrosos. Este umbral garantiza que el sistema active las alarmas visuales y sonora solo en presencia de concentraciones críticas de gas, reduciendo falsas activaciones por variaciones leves en la calidad del aire.
+
+- **Sensor de flama:** La respuesta fue inmediata ante la presencia de fuego, activando el LED RGB en rojo y el buzzer. Se realizaron pruebas con distintas intensidades de llama para asegurar que el sensor reaccionara de forma confiable y no se activara por otras fuentes de luz intensa que no representaran un riesgo real.  
 
 
 #### Tiempo de Respuesta
@@ -238,16 +250,16 @@ Se midió el tiempo de reacción del sistema desde la detección hasta la activa
 - **Llama:** 1 segundo
 - **Actualización en el tablero de control:** 4 - 5 segundos
 
-Estos tiempos de respuesta cumplen con los requerimientos de un sistema de alerta temprana, aunque la latencia del tablero de control podría mejorarse.
+Estos tiempos de respuesta cumplen con los requerimientos de un sistema de alerta temprana. Sin embargo, se identificó que la latencia en la actualización del tablero de control podría optimizarse.
 
 ### Análisis de Resultados
-Los resultados demuestran que el sistema es funcional para la detección temprana de incendios. Se identificaron algunos aspectos a mejorar:
+Los resultados demuestran que el sistema es funcional para la detección temprana de incendios.  No obstante, se identificaron algunos aspectos a mejorar:
 - **Optimización del consumo energético:** Se observó un consumo elevado cuando todos los actuadores estaban activos simultáneamente.
 - **Interferencias ambientales:** En entornos con humo denso, el sensor de gas MQ-2 presentó ligeras fluctuaciones en la lectura.
-- **Fiabilidad en campo abierto:** Se recomienda realizar pruebas en ubicaciones reales para validar la precisión del sistema en condiciones de viento y humedad variables.
-- **Optimización del servidor web:** La latencia de actualización del tablero de control (4 - 5 segundos) puede mejorarse optimizando el manejo de tareas y revisando la eficiencia del código HTML/JavaScript en la actualización de datos.
-- **Dificultades de conexión:** Durante las pruebas, la conexión con el ESP32 presentó dificultades ocasionales, posiblemente debido a la demora en la compilación del código en Arduino IDE y a la estabilidad de la red WiFi.
-- **Administración de tareas:** Aunque se probó inicialmente FreeRTOS para la gestión de hilos y tareas concurrentes, se encontró que el código basado en Task Scheduler fue más eficiente y estable en este caso. Task Scheduler permitió una ejecución más predecible sin bloqueos en el sistema, mientras que FreeRTOS presentó ciertas dificultades en la sincronización de tareas.
+- **Fiabilidad en campo abierto:** Se recomienda realizar pruebas en ubicaciones reales para evaluar el desempeño del sistema en condiciones de viento y humedad variables.
+- **Optimización del servidor web:** La latencia en la actualización del tablero de control (4 - 5 segundos) puede mejorarse optimizando la administración de tareas en el ESP32 y la eficiencia del código HTML/JavaScript.
+- **Dificultades de conexión:** Durante las pruebas, la conexión con el ESP32 presentó fallos ocasionales, posiblemente debido a la demora en la compilación del código en Arduino IDE y a la estabilidad de la red WiFi.
+- **Administración de tareas:** Aunque se desarrolló una versión basada en FreeRTOS para la gestión de tareas concurrentes, se encontró que el código basado en TaskScheduler presentó un desempeño más predecible y estable en este caso. TaskScheduler permitió una ejecución secuencial sin bloqueos en el sistema, mientras que en FreeRTOS se identificaron ciertas dificultades en la sincronización de tareas. Sin embargo, FreeRTOS sigue siendo la solución óptima a nivel conceptual, ya que permite la ejecución de tareas en paralelo y optimiza el uso de recursos.
 
 ---
 ## 5. Autoevaluación del Protocolo de Pruebas
@@ -256,21 +268,21 @@ Las pruebas del sistema se realizaron en dos entornos principales: un laboratori
 </p> 
 
 <p align="justify"> 
-Una vez ensamblado el prototipo, se llevaron a cabo pruebas físicas en laboratorio utilizando un mechero para simular condiciones reales de incendio. El objetivo fue comprobar que los sensores detectaran correctamente los cambios en el ambiente, y que dicha información se reflejara de forma precisa tanto en los actuadores físicos como en el tablero de control web. Para validar la visualización de datos, inicialmente se usaron valores estáticos en el HTML, los cuales fueron posteriormente reemplazados por datos reales en tiempo de ejecución. 
+Una vez ensamblado el prototipo, se realizaron pruebas en laboratorio utilizando un mechero para simular condiciones reales de incendio. El objetivo era comprobar que los sensores detectaran correctamente los cambios en el ambiente y que la información se reflejara con precisión tanto en los actuadores físicos como en el tablero de control web. Para validar la visualización de datos, inicialmente se utilizaron valores estáticos en el HTML, que posteriormente fueron reemplazados por datos reales en tiempo de ejecución.
 </p> 
 <p align="justify">
-El prototipo fue construido con los siguientes componentes: un sensor de temperatura DS18B20, un sensor de llama, un sensor de gas MQ-2, un LED RGB, una pantalla LCD 16x2, un buzzer activo, una protoboard y un microcontrolador ESP32, encargado del procesamiento de datos y la gestión del servidor web embebido. 
+El prototipo fue construido con los siguientes componentes: un sensor de temperatura DS18B20, un sensor de llama, un sensor de gas MQ-2, un LED RGB, una pantalla LCD 16x2, un buzzer activo, una protoboard y un microcontrolador ESP32, encargado del procesamiento de datos y la gestión del servidor web embebido.
 </p>
 
 ### Umbrales y condiciones de alerta
 <p align="justify"> 
-Los umbrales de activación fueron definidos tras un análisis de las lecturas de los sensores en condiciones normales de laboratorio. Se observó que la temperatura ambiente se mantenía entre 18 °C y 20 °C, y que el nivel de gas no superaba los 3000. A partir de estas observaciones, se establecieron los siguientes umbrales: 
+Los umbrales de activación fueron definidos tras un análisis de las lecturas de los sensores en condiciones normales de laboratorio. Se observó que aproximadamente la temperatura ambiente se mantenía entre 20 °C y 22 °C, y que el nivel de gas no superaba los 3000. A partir de estas observaciones, se establecieron los siguientes umbrales: 
 </p>
 
-- Temperatura máxima: 24 °C
-- Incremento rápido de temperatura: ≥ 0.5 °C en menos de 10 segundos
-- Nivel de gas: > 3200
-- Sensor de llama: activo al detectar fuego
+- **Temperatura máxima:** 24 °C
+- **Incremento rápido de temperatura:** ≥ 0.5 °C en menos de 10 segundos
+- **Nivel de gas:** > 3200
+- **Sensor de llama:** activo al detectar fuego
 
 <p align="justify"> 
 Cuando un sensor supera su umbral, el sistema genera una alerta específica: “Alerta Gas”, “Alerta Temperatura” o “Alerta Llama”. En caso de que el sensor de llama se active simultáneamente con otro sensor, se emite una “Alerta Incendio”. Ante cualquier tipo de alerta, el LED RGB cambia de verde a rojo y se activa el buzzer como señal sonora. Estas alertas, junto con la activación de las señales visuales y auditivas, fueron clave durante el protocolo de pruebas para verificar el correcto funcionamiento del sistema. 
@@ -278,11 +290,11 @@ Cuando un sensor supera su umbral, el sistema genera una alerta específica: “
 
 ### Desempeño con respecto a expectativas iniciales
 <p align="justify"> 
-El sistema respondió de manera efectiva ante los eventos simulados, cumpliendo con los criterios definidos para la activación de alertas. Los sensores se activaron correctamente y los actuadores (LED RGB y buzzer) reaccionaron como se esperaba. La visualización en el tablero web también fue exitosa, aunque se detectó un leve retraso en la actualización de los datos, lo cual afectó mínimamente la inmediatez de la información mostrada. Esta situación se mitigó optimizando la frecuencia de actualización de datos en el HTML. 
+El sistema respondió de manera efectiva ante los eventos simulados, cumpliendo con los criterios definidos para la activación de alertas. Los sensores se activaron correctamente y los actuadores (LED RGB y buzzer) reaccionaron como se esperaba. La visualización en el tablero web también fue exitosa, aunque se detectó un leve retraso en la actualización de los datos, lo que afectó mínimamente la inmediatez de la información mostrada. Para mitigar este problema, se optimizó la frecuencia de actualización de los datos en el HTML.
 </p> 
 
 <p align="justify"> 
-Una de las principales limitaciones fue que no fue posible implementar correctamente la visualización del histórico de lecturas de los sensores en el HTML. Aunque se exploraron diferentes alternativas como el uso de arreglos para almacenar los valores recientes y la generación de un archivo JSON con actualizaciones constantes, no se logró establecer una conexión efectiva entre esta información y su presentación dinámica en la interfaz web. Por lo tanto, el tablero solo muestra los valores actuales en tiempo real, dejando la visualización histórica como una mejora pendiente para futuras versiones. 
+Inicialmente, se encontró una dificultad en la implementación de la visualización del histórico de lecturas en la interfaz web. Aunque se exploraron diferentes alternativas, como el uso de arreglos para almacenar valores recientes y la generación de un archivo JSON con actualizaciones constantes, no se logró establecer una conexión efectiva entre esta información y su presentación dinámica en el tablero durante las pruebas físicas. Sin embargo, en etapas posteriores y utilizando la plataforma de simulación Wokwi, se logró desarrollar una versión funcional del registro histórico de datos. Esto representó un avance importante, ya que permitió verificar la factibilidad de la solución para futuras implementaciones en el prototipo físico.
 </p> 
 
 <p align="justify">
@@ -294,22 +306,22 @@ El sensor de gas MQ-2 fue el componente más inestable durante las pruebas. Debi
 </p>
 
 <p align="justify">
-En general, el sistema mostró un desempeño estable y coherente con las expectativas iniciales en cuanto a la detección de condiciones críticas y su presentación en tiempo real en el tablero de control. Sin embargo, dejó abierta la posibilidad de seguir mejorando aspectos como la integración de datos históricos, la estabilidad de los sensores y la interacción del usuario con el sistema. 
+En general, el sistema mostró un desempeño estable y coherente con las expectativas iniciales en cuanto a la detección de condiciones críticas y su presentación en tiempo real en el tablero de control. Sin embargo, dejó abierta la posibilidad de seguir mejorando aspectos como la integración de datos históricos en el hardware físico, la estabilidad de los sensores y la interacción del usuario con el sistema. 
 </p>
 
 ### Mejoras identificadas
 - Se implementó un tiempo de inactividad tras presionar el botón de apagado de la alarma, evitando su reactivación inmediata.
 - Se ajustaron los umbrales de los sensores tras pruebas iterativas, mejorando la estabilidad del sistema.
 - Se reemplazó la visualización con datos simulados por datos en tiempo real, fortaleciendo la funcionalidad del tablero de control.
-- Se inició el desarrollo de un archivo JSON y estructura de arreglos para almacenar datos históricos, aunque no se logró vincular esta información con la interfaz HTML.
+- Se logró desarrollar y probar la visualización del histórico de datos en la plataforma de simulación Wokwi, sentando las bases para su futura implementación en el prototipo físico.
 - Se identificó la necesidad de integrar un algoritmo de filtrado de datos para reducir falsos positivos en futuras versiones.
 
 <p align="justify"> 
-El sistema demostró ser funcional y eficiente en la detección de condiciones de riesgo asociadas a incendios forestales, cumpliendo con los objetivos principales del proyecto. A pesar de las limitaciones encontradas —particularmente en la visualización del histórico de datos y la calibración del sensor MQ-2— se implementaron soluciones efectivas para mantener la estabilidad y fiabilidad del sistema. El desarrollo del tablero de control basado en un servidor web embebido en el ESP32, con lectura en tiempo real, representa un avance importante hacia la aplicación del sistema en escenarios reales. 
+El sistema demostró ser funcional y eficiente en la detección de condiciones de riesgo asociadas a incendios forestales, cumpliendo con los objetivos principales del proyecto. A pesar de las limitaciones encontradas —particularmente en la visualización del histórico de datos en el prototipo físico y la calibración del sensor MQ-2— se implementaron soluciones efectivas para mantener la estabilidad y fiabilidad del sistema. El desarrollo del tablero de control basado en un servidor web embebido en el ESP32, con lectura en tiempo real, representa un avance importante hacia la aplicación del sistema en escenarios reales.
 </p> 
 
 <p align="justify"> 
-Para trabajos futuros, se recomienda enfocar esfuerzos en la mejora de la persistencia y visualización de datos históricos, así como en el refinamiento de la interfaz web y la lógica de detección. Estas mejoras permitirán robustecer el sistema y aumentar su aplicabilidad en campo, aportando a la mitigación oportuna de incendios forestales en los cerros orientales de Bogotá.
+Para trabajos futuros, se recomienda enfocar esfuerzos en la mejora de la persistencia y visualización de datos históricos en el hardware físico, así como en el refinamiento de la interfaz web y la lógica de detección. Estas mejoras permitirán robustecer el sistema y aumentar su aplicabilidad en campo, aportando a la mitigación oportuna de incendios forestales en los cerros orientales de Bogotá.
 </p>
 
 ---
@@ -323,15 +335,14 @@ La implementación de un tablero de control web embebido en el ESP32 brindó una
 
 Sin embargo, se identificaron oportunidades de mejora en términos de optimización del consumo energético, estabilidad de la conectividad WiFi y reducción de la latencia en la actualización de datos. A pesar de estos desafíos, el prototipo cumple con los objetivos planteados y sienta las bases para futuras mejoras e implementaciones en escenarios reales.
 
-
 ### Retos Presentados Durante el Desarrollo del Proyecto  
 Durante el desarrollo del proyecto, se enfrentaron diversos desafíos técnicos y de implementación, entre ellos:  
 - **Optimización del consumo energético:** Se identificó un alto consumo cuando varios actuadores estaban activados simultáneamente.  
 - **Interferencias ambientales:** En presencia de humo denso, el sensor MQ-2 mostró variaciones en las mediciones.  
 - **Conectividad WiFi inestable:** Se presentaron dificultades ocasionales en la comunicación con el ESP32, lo que afectó la actualización del tablero de control.  
-- **Latencia en la actualización de datos:** El tiempo de respuesta del tablero de control web varió entre 4 y 5 segundos, lo que podría optimizarse mejorando la gestión de tareas concurrentes en el ESP32.  
-- **Gestión de tareas concurrentes:** Aunque se probó FreeRTOS para administrar múltiples procesos, Task Scheduler ofreció un mejor rendimiento y estabilidad.  
-
+- **Latencia en la actualización de datos:** El tiempo de respuesta del tablero de control web varió entre 4 y 5 segundos, lo que podría optimizarse mejorando la gestión de tareas concurrentes en el ESP32.
+- **Registro histórico de datos:** Inicialmente, se presentaron dificultades para visualizar el historial de mediciones, pero tras ajustes en el código y pruebas en el simulador, se logró una implementación funcional.
+  
 ### Trabajo Futuro  
 Para mejorar y escalar el sistema, se proponen las siguientes acciones:  
 - **Optimización de la eficiencia energética:** Explorar el uso de modos de ahorro de energía en el ESP32 y sensores de bajo consumo.  
