@@ -29,7 +29,6 @@
 <p align="justify">
 Los cerros orientales de Bogotá son fundamentales para la regulación climática y la conservación de la biodiversidad. Su presencia como barrera y protector natural constituye un regulador del clima, del cual depende en buena medida la disponibilidad de agua para la capital y municipios aledaños [1]. Además, son esenciales en la producción de oxígeno en una sabana donde la pérdida de vegetación es creciente, lo que los hace aún más vulnerables a incendios forestales agravados por sequías prolongadas, altas temperaturas y la acumulación de material seco, junto con actividades humanas como fogatas, quemas agrícolas y expansión urbana descontrolada [2].
 </p>
-
 <p align="justify">
 Para mitigar estos riesgos, es fundamental implementar sistemas de detección de incendios eficientes que permitan una respuesta rápida por parte de las autoridades. La integración de tableros de control en estos sistemas no solo optimiza su operatividad, sino que también permite a las autoridades identificar posibles fallas antes de que se conviertan en emergencias críticas, al proporcionar un monitoreo constante, activar alarmas y generar notificaciones en tiempo real, facilitando una respuesta inmediata. Las soluciones que incorporan este tipo de herramientas no solo protegen bienes materiales, sino también lo más importante: la vida humana. ¡En situaciones de emergencia, cada segundo cuenta! [3].
 </p>
@@ -40,11 +39,9 @@ Para mitigar estos riesgos, es fundamental implementar sistemas de detección de
 <p align="justify"> 
 Actualmente, la detección de incendios en los cerros orientales de Bogotá depende de vigilancia manual o reportes ciudadanos, lo que retrasa la respuesta de las autoridades y agrava los daños ambientales y sociales. Esta falta de monitoreo en tiempo real limita la capacidad de reacción de los organismos de emergencia, aumentando la propagación del fuego y su impacto negativo en la biodiversidad, la calidad del aire y las comunidades aledañas, lo que hace crítica la necesidad de una solución tecnológica eficiente. 
 </p> 
-
 <p align="justify"> 
 Para abordar esta problemática, el proyecto propone la implementación de un sistema basado en Internet de las Cosas que permita un monitoreo continuo del entorno y la activación inmediata de alarmas visuales y sonoras en caso de detectar condiciones de riesgo. Además, incorpora un tablero de control web embebido en un ESP32, al cual las autoridades podrán acceder desde un navegador web dentro de la WLAN. A través de esta interfaz, se pueden visualizar en tiempo real el estado de las variables ambientales clave, como temperatura, presencia de llamas y concentración de gases, asi como poder llegar a apagar remotamente estas alarmas físicas y enviar notificaciones de alerta, asegurando una intervención rápida y eficiente ante posibles incendios. 
 </p>
-
 <p align="justify"> 
 Gracias a su arquitectura autónoma, esta solución ofrecerá un sistema de prevención inteligente, con monitoreo accesible y eficiente, permitiendo optimizar los tiempos de respuesta, minimizar el impacto ambiental de los incendios y fortalecer las estrategias de prevención. 
 </p>
@@ -54,15 +51,16 @@ Gracias a su arquitectura autónoma, esta solución ofrecerá un sistema de prev
 ## 3. Solución Propuesta
 
 ### Restricciones de Diseño Identificadas
-
+<p align="justify"> 
 Al desarrollar el sistema IoT para detectar incendios en los cerros orientales de Bogotá, se identificaron varias restricciones que afectan su diseño e implementación:
+</p> 
 
 #### 1. Técnicas
 - Se usa un **ESP32**, el cual tiene un límite en la memoria RAM y el procesamiento, lo que puede afectar la ejecución simultánea del servidor web y la recolección de datos de sensores.
 - Los sensores de **temperatura, gas (MQ-2) y llama** requieren calibración para evitar falsas alarmas, además de que tienen tiempos de respuesta y precisión que pueden influir en la detección temprana de incendios.
 - La alimentación del sistema debe ser autónoma para funcionar sin conexión a la red eléctrica.
 - Para la gestión de múltiples tareas, se implementó un enfoque optimizado que permite la adquisición de datos sin afectar la estabilidad del sistema.
-- Dependencia de una conexión estable de Wi-Fi para enviar y visualizar los datos en la interfaz web.
+- Dependencia de una conexión estable de WiFi para enviar y visualizar los datos en la interfaz web.
 
 #### 2. Económicas
 - Se busca tratar de minimizar costos en la implementación del sistema, eligiendo sensores asequibles y fáciles de conseguir, pero siendo lo suficientemente confiables y precisos para realizar apropiadamente las mediciones.
@@ -87,24 +85,26 @@ Al desarrollar el sistema IoT para detectar incendios en los cerros orientales d
 - El sistema debe operar en **tiempo real** para detectar incendios lo más rápido posible.
 - Se debe definir un intervalo adecuado entre lecturas en los sensores para evitar saturación del sistema sin comprometer la detección temprana.
 - Debe ser **autónomo y de bajo mantenimiento**, funcionando sin intervención constante.
-
   
 ### Arquitectura Propuesta
-
+<p align="justify"> 
 A continuación, se presenta un Diagrama de Bloques que ilustra los elementos de hardware y software que conforman la solución IoT desarrollada.
+</p> 
 
 ![Diagrama de la arquitectura de la solución](Diagramas/DiagramaBloques.png)
 *Figura 1: Arquitectura IoT propuesta de la solución.*
 
+<p align="justify"> 
 El sistema está basado en un ESP32, que actúa como la unidad de procesamiento principal y se encarga de la comunicación con los diferentes módulos. En este sistema, el módulo de sensado opera en segundo plano y lee continuamente los datos proporcionados por los sensores de temperatura (DS18B20), gas (MQ-2) y llama. La información obtenida es enviada al módulo de procesamiento, que analiza los datos recopilados, actualiza el historial de temperaturas y gestiona alertas cuando se detectan condiciones de riesgo. Si se determina que hay una situación de peligro, el módulo de actuadores entra en acción, activando un LED RGB y un buzzer para alertar sobre el estado del ambiente. Asimismo, el módulo de visualización actualiza la pantalla LCD I2C, donde se muestra en tiempo real la temperatura y el estado general del entorno.
-
-Además de gestionar el procesamiento de datos y los módulos de hardware, el ESP32 implementa un servidor web embebido (EWS), permitiendo que el sistema pueda ser monitoreado de manera remota a través de una interfaz web. La comunicación entre el ESP32 y la interfaz se realiza mediante TCP/IP a través de una conexión Wi-Fi, la cual puede establecerse utilizando un punto de acceso externo (AP o router). Gracias a esta arquitectura, cualquier dispositivo conectado a la misma red puede acceder a la interfaz web mediante un navegador, donde se visualiza en tiempo real la información del sistema.
-
+</p>
+<p align="justify"> 
+Además de gestionar el procesamiento de datos y los módulos de hardware, el ESP32 implementa un servidor web embebido (EWS), permitiendo que el sistema pueda ser monitoreado de manera remota a través de una interfaz web. La comunicación entre el ESP32 y la interfaz se realiza mediante TCP/IP a través de una conexión WiFi, la cual puede establecerse utilizando un punto de acceso externo (AP o router). Gracias a esta arquitectura, cualquier dispositivo conectado a la misma red puede acceder a la interfaz web mediante un navegador, donde se visualiza en tiempo real la información del sistema.
+</p>
+<p align="justify"> 
 Cabe resaltar que toda la lógica de control y comunicación ha sido desarrollada en C++ para el ESP32, asegurando que el sistema opere de manera autónoma y pueda reaccionar de inmediato ante cualquier cambio en el entorno. Esta integración de hardware y software permite que la solución IoT sea eficiente, confiable y accesible desde cualquier dispositivo con conexión a la red.
-
+</p>
 
 ### Desarrollo Teórico Modular: Criterios de Diseño Establecidos
-
 Para que el sistema sea eficiente y funcional, se definieron los siguientes criterios de diseño:
 
 #### 1. Fiabilidad y Precisión
@@ -135,49 +135,60 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 
 
 ### Diagrama UML
-
+<p align="justify"> 
 La siguiente figura ilustra el Diagrama de Actividad UML de la solución propuesta, donde se representa el flujo de ejecución del sistema de monitoreo y alerta. Para una mejor visualización, se proporciona un enlace adicional:
+</p>
 
 ![Diagrama de actividades de la solución](Diagramas/DiagramaActividades.png)
 *Figura 2: Diagrama UML de actividades de la solución propuesta.*
 
 - ***Link para mejor visualización del diagrama:*** https://www.canva.com/design/DAGirJpfGvo/iahywiuk-EanTBXkgE06xw/view?utm_content=DAGirJpfGvo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha8dcd33791
 
+<p align="justify"> 
 Este diagrama representa el flujo de ejecución del sistema, abarcando desde la inicialización hasta la activación de los actuadores, la comunicación con el servidor y la visualización de datos en el cliente web. Para organizar mejor este proceso, el sistema se divide en cinco partes principales:
+</p>
+
 - **Entorno y flujo principal:** Configura los pines de entrada y salida, inicializa la pantalla LCD, el sensor de temperatura y establece las variables globales de estado. También inicia el servidor web para permitir la comunicación con el cliente web.
 - **Módulo de sensado:** En un segundo hilo, recoge información de los sensores de temperatura (DS18B20), gas (MQ-2) y llama, asegurando mediciones precisas del entorno.
 - **Módulo de procesamiento:** Analiza los datos de los sensores y determina si las condiciones son seguras o si es necesario activar una alerta. Se aplican reglas de decisión basadas en umbrales predefinidos, clasificando la situación en dos posibles estados: normal o en alerta. Además, se registran los valores de temperatura y se encarga de respetar la duración establecida para las alertas.
 - **Módulo de actuadores:** Si se detecta una alerta específica o de incendio, se activa la alarma poniendo el LED RGB en color rojo (indicando nivel de riesgo) y activando el buzzer para generar una advertencia sonora. En caso contrario, se desactiva este último y el LED toma un color verde.
 - **Módulo de visualización:** Muestra la temperatura actual y el estado del entorno que detecta el sistema en la pantalla LCD y en la interfaz web del usuario.
 
+<p align="justify"> 
 Además, el sistema ahora cuenta con un Cliente Web, que permite a los usuarios monitorear las mediciones en tiempo real y apagar la alarma si ha sido activada. El servidor web recibe solicitudes HTTP GET desde el navegador para actualizar datos y gestionar la alarma.
-
+</p>
+<p align="justify"> 
 Finalmente, una vez completadas todas estas acciones, el sistema espera 1000 ms antes de repetir el ciclo, permitiendo un monitoreo constante y en tiempo real.
-
+</p>
 
 ### Esquemático de Hardware
-
 En seguida, se muestra el diagrama que representa el Esquemático de Hardware de la solución planteada.
 
 ![Esquemático de hardware de la solución](Diagramas/EsquematicoHardware.png)
 *Figura 3: Esquemático de hardware de la solución propuesta.*
 
+<p align="justify"> 
 En esta etapa del proyecto, se realizó una migración del microcontrolador Arduino UNO R3 a un ESP32, con el propósito de incorporar conectividad WiFi en la solución. A pesar de este cambio, la estructura del hardware se mantiene similar a la versión anterior (Challenge #1), con la diferencia de que ahora los periféricos están conectados a los pines del ESP32 en lugar del Arduino.
-
+</p>
+<p align="justify"> 
 Para la simulación en Wokwi, se utilizó un sensor de temperatura real. Sin embargo, debido a la falta de disponibilidad de sensores de gas y llama en la plataforma, se optó por simular su comportamiento utilizando un potenciómetro y un botón, respectivamente.
+</p>
 
 - **Simulación del sensor de gas:** Se empleó un potenciómetro conectado a un pin analógico, permitiendo ajustar manualmente el valor que representaba la concentración de gas. Aunque Wokwi dispone de un sensor de gas que mide en ppm, se decidió utilizar el potenciómetro para mantener la coherencia con la lógica del código, que no trabaja con unidades específicas de concentración, sino con un umbral predefinido para activar la alerta.
 
 - **Simulación del sensor de llama:** Se utilizó un botón como entrada digital para indicar la presencia de fuego. Al presionar el botón, se generaba una señal de activación similar a la que enviaría un sensor de llama real.
 
+<p align="justify"> 
 Además de estos elementos, el sistema cuenta con un buzzer, que se activa en caso de detectar una condición de alarma, y un LED RGB, que cambia de color en función del estado del sistema (verde y rojo). Para su correcta conexión, se utilizaron resistencias de 4.7 kΩ y 220 Ω, asegurando la adecuada polarización y protección de los componentes.
-
+</p>
+<p align="justify"> 
 El código fue diseñado para gestionar tanto el sensor de temperatura como los componentes simulados, activando las alertas correspondientes según las lecturas obtenidas. Posteriormente, al trasladar el proyecto a la implementación física, se conectaron los sensores reales de temperatura, gas y llama, utilizando los mismos pines definidos en la simulación. Gracias a esta correspondencia, los ajustes en el código fueron mínimos, asegurando un comportamiento consistente entre la simulación y la implementación real. Por tanto, se puede decir que este proceso confirmó que el diseño inicial en la simulación era válido y funcional para su ejecución en hardware físico, validando la viabilidad del sistema antes de su construcción.
-
+</p>
 
 ### Estándares de Ingeniería Aplicados
-
+<p align="justify"> 
 Para garantizar que el sistema desarrollado sea seguro, eficiente y cumpla con principios de calidad, se han aplicado diversos estándares de ingeniería en diferentes áreas del proyecto:
+</p>
 
 #### 1. Sensores y Electrónica
 - **IEEE 1451:** Se siguieron principios de interoperabilidad para la integración de sensores en el sistema IoT, asegurando compatibilidad y escalabilidad.
@@ -197,15 +208,16 @@ Para garantizar que el sistema desarrollado sea seguro, eficiente y cumpla con p
 
 ## 4. Configuración Experimental, Resultados y Análisis
 
-
 ### Configuración Experimental
-
+<p align="justify"> 
 Para validar el funcionamiento del prototipo de detección de incendios en los cerros orientales de Bogotá, se llevó a cabo una serie de pruebas experimentales en un entorno controlado. Se utilizó el simulador Wokwi para verificar la conectividad y respuesta de los sensores y actuadores antes de la implementación física. Posteriormente, se realizaron pruebas en un entorno físico con diferentes condiciones ambientales. Además, se evaluó el funcionamiento del servidor web embebido en el ESP32 y la administración de tareas concurrentes.
-
+</p>
+<p align="justify"> 
 Para validar el funcionamiento del prototipo de detección de incendios en los cerros orientales de Bogotá, se llevaron a cabo pruebas experimentales en un entorno controlado. Inicialmente, se utilizó el simulador Wokwi para verificar la conectividad y respuesta de los sensores y actuadores antes de la implementación física. Luego, se realizaron pruebas en hardware utilizando TaskScheduler para la administración de tareas. Posteriormente, se desarrolló una versión mejorada del sistema basada en FreeRTOS, la cual fue validada en simulación y se considera la solución óptima por su capacidad de gestionar el sensado en segundo plano mediante hilos.
-
+</p>
+<p align="justify"> 
 Además, se realizaron pruebas en un entorno físico con diferentes condiciones ambientales, y se evaluó el funcionamiento del servidor web embebido en el ESP32 y la administración de tareas concurrentes, analizando el rendimiento del sistema en términos de latencia y estabilidad.
-
+</p>
 
 ### Entorno de Prueba
 El experimento se realizó en tres fases:
@@ -224,24 +236,27 @@ El experimento se realizó en tres fases:
    - Se observó que el tiempo de respuesta promedio en la página web fue de 4 a 5 segundos, lo que puede optimizarse mejorando la administración de procesos y la comunicación con el ESP32.
    - Se identificó que la latencia en la actualización del tablero se debe en parte a la estructura del código HTML/JavaScript y al manejo de tareas en el ESP32.
 
+<p align="justify"> 
 Inicialmente, la implementación física utilizó **TaskScheduler**, un método sencillo de gestión de tareas que permitió un funcionamiento estable del sistema sin bloqueos. Sin embargo, posteriormente se desarrolló una versión basada en **FreeRTOS**, la cual introduce el uso de hilos para gestionar el sensado en segundo plano, optimizando la eficiencia del sistema.
-
+</p>
+<p align="justify"> 
 Aunque la implementación con **TaskScheduler** funcionó correctamente, **FreeRTOS** representa una mejora significativa en la administración de procesos concurrentes, permitiendo una ejecución más eficiente de las tareas críticas del sistema. Por esta razón, **FreeRTOS** se considera la solución preferida, aunque solo se haya validado en simulación hasta el momento en que se grabó el video de la validación del sistema.
+</p>
 
 ### Resultados y Análisis
 
 Tras la ejecución de los experimentos, se obtuvieron los siguientes resultados:
 
 #### Comportamiento del Sistema  
-
+<p align="justify"> 
 Los sensores mostraron un desempeño estable y respondieron dentro de los umbrales definidos, los cuales fueron determinados con base en pruebas experimentales realizadas en un entorno de laboratorio. Para su calibración, se realizaron múltiples mediciones en condiciones normales y bajo estímulos controlados, con el fin de establecer umbrales que minimizaran falsas alarmas y garantizaran una detección efectiva ante posibles incendios. 
+</p>
 
 - **Temperatura:** El sensor DS18B20 detectó variaciones con precisión. Se estableció un umbral de **24°C** como temperatura máxima antes de generar una alerta, considerando que aproximadamente en el laboratorio se registraban temperaturas normales entre **20°C y 22°C**. Se determinó que superar los **24°C** en este contexto era un indicio de un aumento anómalo de temperatura. Además, se determinó que un aumento abrupto de **0.5°C** en un corto período representa un cambio significativo que puede indicar un inicio de incendio. Esta decisión se basó en pruebas donde se observó que incendios incipientes generan incrementos rápidos de temperatura en comparación con fluctuaciones ambientales normales.
 
 - **Gas MQ-2:** Se fijó un umbral de **3200**, determinado tras exponer el sensor a distintas concentraciones de gas en el ambiente del laboratorio. Se identificó que valores superiores a este límite eran consistentes con la presencia de sustancias inflamables en niveles peligrosos. Este umbral garantiza que el sistema active las alarmas visuales y sonora solo en presencia de concentraciones críticas de gas, reduciendo falsas activaciones por variaciones leves en la calidad del aire.
 
 - **Sensor de flama:** La respuesta fue inmediata ante la presencia de fuego, activando el LED RGB en rojo y el buzzer. Se realizaron pruebas con distintas intensidades de llama para asegurar que el sensor reaccionara de forma confiable y no se activara por otras fuentes de luz intensa que no representaran un riesgo real.  
-
 
 #### Tiempo de Respuesta
 Se midió el tiempo de reacción del sistema desde la detección hasta la activación de las alarmas. En promedio:
@@ -250,10 +265,14 @@ Se midió el tiempo de reacción del sistema desde la detección hasta la activa
 - **Llama:** 1 segundo
 - **Actualización en el tablero de control:** 4 - 5 segundos
 
+<p align="justify"> 
 Estos tiempos de respuesta cumplen con los requerimientos de un sistema de alerta temprana. Sin embargo, se identificó que la latencia en la actualización del tablero de control podría optimizarse.
+</p>
 
 ### Análisis de Resultados
+<p align="justify"> 
 Los resultados demuestran que el sistema es funcional para la detección temprana de incendios.  No obstante, se identificaron algunos aspectos a mejorar:
+</p>
 - **Optimización del consumo energético:** Se observó un consumo elevado cuando todos los actuadores estaban activos simultáneamente.
 - **Interferencias ambientales:** En entornos con humo denso, el sensor de gas MQ-2 presentó ligeras fluctuaciones en la lectura.
 - **Fiabilidad en campo abierto:** Se recomienda realizar pruebas en ubicaciones reales para evaluar el desempeño del sistema en condiciones de viento y humedad variables.
