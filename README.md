@@ -119,7 +119,20 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 - En futuras versiones, se podrían incorporar tecnologías IoT como MQTT para mejorar la comunicación y monitoreo en tiempo real.  
 
 ### Esquemático de Hardware
-...
+
+En seguida, se muestra el diagrama que representa el Esquemático de Hardware de la solución planteada.
+![Esquemático de hardware de la solución](Diagramas/EsquematicoHardware.png)
+*Figura 3: Esquemático de hardware de la solución propuesta.*
+
+En esta etapa del proyecto, se realizó una migración del microcontrolador Arduino UNO R3 a un ESP32, con el propósito de incorporar conectividad WiFi en la solución. A pesar de este cambio, la estructura del hardware se mantiene similar a la versión anterior (Challenge #1), con la diferencia de que ahora los periféricos están conectados a los pines del ESP32 en lugar del Arduino.
+
+Para la simulación en Wokwi, se utilizó un sensor de temperatura real. Sin embargo, debido a la falta de disponibilidad de sensores de gas y llama en la plataforma, se optó por simular su comportamiento utilizando un potenciómetro y un botón, respectivamente.
+
+- **Simulación del sensor de gas:** Se empleó un potenciómetro conectado a un pin analógico, permitiendo ajustar manualmente el valor que representaba la concentración de gas. Aunque Wokwi dispone de un sensor de gas que mide en ppm, se decidió utilizar el potenciómetro para mantener la coherencia con la lógica del código, que no trabaja con unidades específicas de concentración, sino con un umbral predefinido para activar la alerta.
+
+- **Simulación del sensor de llama:** Se utilizó un botón como entrada digital para indicar la presencia de fuego. Al presionar el botón, se generaba una señal de activación similar a la que enviaría un sensor de llama real.
+
+El código fue diseñado para gestionar tanto el sensor de temperatura como los componentes simulados, activando las alertas correspondientes según las lecturas obtenidas. Posteriormente, al trasladar el proyecto a la implementación física, se conectaron los sensores reales de temperatura, gas y llama, utilizando los mismos pines definidos en la simulación. Gracias a esta correspondencia, los ajustes en el código fueron mínimos, asegurando un comportamiento consistente entre la simulación y la implementación real. Por tanto, se puede decir que este proceso confirmó que el diseño inicial en la simulación era válido y funcional para su ejecución en hardware físico, validando la viabilidad del sistema antes de su construcción.
 
 
 ### Estándares de Ingeniería Aplicados
