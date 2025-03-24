@@ -90,7 +90,17 @@ Al desarrollar el sistema IoT para detectar incendios en los cerros orientales d
 
   
 ### Arquitectura Propuesta
-....
+
+A continuación, se presenta un Diagrama de Bloques que ilustra los elementos de hardware y software que conforman la solución IoT desarrollada.
+
+![Diagrama de la arquitectura de la solución](Diagramas/DiagramaBloques.png)
+*Figura 1: Arquitectura IoT propuesta de la solución.*
+
+El sistema está basado en un ESP32, que actúa como la unidad de procesamiento principal y se encarga de la comunicación con los diferentes módulos. En este sistema, el módulo de sensado opera en segundo plano y lee continuamente los datos proporcionados por los sensores de temperatura (DS18B20), gas (MQ-2) y llama. La información obtenida es enviada al módulo de procesamiento, que analiza los datos recopilados, actualiza el historial de temperaturas y gestiona alertas cuando se detectan condiciones de riesgo. Si se determina que hay una situación de peligro, el módulo de actuadores entra en acción, activando un LED RGB y un buzzer para alertar sobre el estado del ambiente. Asimismo, el módulo de visualización actualiza la pantalla LCD I2C, donde se muestra en tiempo real la temperatura y el estado general del entorno.
+
+Además de gestionar el procesamiento de datos y los módulos de hardware, el ESP32 implementa un servidor web embebido (EWS), permitiendo que el sistema pueda ser monitoreado de manera remota a través de una interfaz web. La comunicación entre el ESP32 y la interfaz se realiza mediante TCP/IP a través de una conexión Wi-Fi, la cual puede establecerse utilizando un punto de acceso externo (AP o router). Gracias a esta arquitectura, cualquier dispositivo conectado a la misma red puede acceder a la interfaz web mediante un navegador, donde se visualiza en tiempo real la información del sistema.
+
+Cabe resaltar que toda la lógica de control y comunicación ha sido desarrollada en C++ para el ESP32, asegurando que el sistema opere de manera autónoma y pueda reaccionar de inmediato ante cualquier cambio en el entorno. Esta integración de hardware y software permite que la solución IoT sea eficiente, confiable y accesible desde cualquier dispositivo con conexión a la red.
 
 
 ### Desarrollo Teórico Modular: Criterios de Diseño Establecidos
@@ -126,6 +136,7 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 ### Esquemático de Hardware
 
 En seguida, se muestra el diagrama que representa el Esquemático de Hardware de la solución planteada.
+
 ![Esquemático de hardware de la solución](Diagramas/EsquematicoHardware.png)
 *Figura 3: Esquemático de hardware de la solución propuesta.*
 
