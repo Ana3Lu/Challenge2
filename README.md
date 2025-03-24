@@ -498,8 +498,8 @@ const char* htmlPage = R"rawliteral(
   )rawliteral";
 
 // ========================== CONFIGURACIÓN WiFi ==========================
-const char* ssid = "iPhone Ana (5)";   // Cambia esto por el nombre del hotspot del iPhone
-const char* password = "Toby3333";  // Cambia esto por tu contraseña
+const char* ssid = "Wokwi-GUEST";   // Cambia esto por el nombre del hotspot del iPhone- Mientras este de wokwi para no exponer otra red
+const char* password = "";  // Cambia esto por tu contraseña
 
 WebServer server(80);
 
@@ -515,9 +515,11 @@ function fetchData() {
             document.getElementById("temp").innerText = data.temperatura + "°C";
             document.getElementById("gas").innerText = data.gas;
             document.getElementById("llama").innerText = data.llama ? "🔥 Detectada" : "✅ No detectada";
+
             // Usar el mensaje real del LCD en la alerta
             let alertaElem = document.getElementById("alerta");
             alertaElem.innerText = data.mensaje;
+
             // Cambiar estilo visual de la alerta
             if (data.alerta) {
                 alertaElem.classList.add("alert");
@@ -526,6 +528,7 @@ function fetchData() {
                 alertaElem.classList.add("safe");
                 alertaElem.classList.remove("alert");
             }
+
             // Guardar en historial y actualizar la tabla
             agregarRegistroHistorial(data);
         })
@@ -535,6 +538,7 @@ function fetchData() {
 function agregarRegistroHistorial(data) {
     // Obtener la hora actual
     let hora = new Date().toLocaleTimeString();
+    
     // Agregar nuevo registro al historial
     historial.push({
         tiempo: hora,
@@ -542,10 +546,12 @@ function agregarRegistroHistorial(data) {
         gas: data.gas,
         llama: data.llama ? "🔥 Detectada" : "✅ No detectada"
     });
+
     // Limitar a los últimos 10 registros para que no se desborde la tabla
     if (historial.length > 10) {
         historial.shift();
     }
+
     // Actualizar la tabla
     actualizarTabla();
 }
@@ -553,6 +559,7 @@ function agregarRegistroHistorial(data) {
 function actualizarTabla() {
     let tabla = document.getElementById("historial-body");
     tabla.innerHTML = ""; // Limpiar la tabla antes de actualizar
+
     historial.forEach(registro => {
         let fila = `<tr>
             <td>${registro.tiempo}</td>
@@ -695,6 +702,7 @@ void manejarAlertas() {
       alerta = true;
       tiempoAlerta = nuevaAlerta ? tiempoActual : tiempoAlerta;
       esIncendio = (llamaDetectada && gasDetectado) || (llamaDetectada && tempAlta);
+
       if (esIncendio) {
           tiempoIncendio = tiempoActual;
           mensaje = "ALERTA: INCENDIO";
@@ -861,6 +869,7 @@ void loop() {
   delay(1000);  // Esperar 1000ms antes de la próxima iteración (1 segundo)
 }
 ```
+
 ### Código fuente con TaskScheduler:
 ```
 #include <WiFi.h>
@@ -973,7 +982,7 @@ const char* htmlPage = R"rawliteral(
 )rawliteral";
 
 // ========================== CONFIGURACIÓN WiFi ==========================
-const char* ssid = "Wokwi-GUEST";   // Cambia esto por el nombre del hotspot del iPhone
+const char* ssid = "Wokwi-GUEST";   // Cambia esto por el nombre del hotspot del iPhone- Mientras este de wokwi para no exponer otra red
 const char* password = "";  // Cambia esto por tu contraseña
 
 WebServer server(80);
@@ -990,9 +999,11 @@ function fetchData() {
             document.getElementById("temp").innerText = data.temperatura + "°C";
             document.getElementById("gas").innerText = data.gas;
             document.getElementById("llama").innerText = data.llama ? "🔥 Detectada" : "✅ No detectada";
+
             // Usar el mensaje real del LCD en la alerta
             let alertaElem = document.getElementById("alerta");
             alertaElem.innerText = data.mensaje;
+
             // Cambiar estilo visual de la alerta
             if (data.alerta) {
                 alertaElem.classList.add("alert");
@@ -1001,6 +1012,7 @@ function fetchData() {
                 alertaElem.classList.add("safe");
                 alertaElem.classList.remove("alert");
             }
+
             // Guardar en historial y actualizar la tabla
             agregarRegistroHistorial(data);
         })
@@ -1010,6 +1022,7 @@ function fetchData() {
 function agregarRegistroHistorial(data) {
     // Obtener la hora actual
     let hora = new Date().toLocaleTimeString();
+    
     // Agregar nuevo registro al historial
     historial.push({
         tiempo: hora,
@@ -1017,10 +1030,12 @@ function agregarRegistroHistorial(data) {
         gas: data.gas,
         llama: data.llama ? "🔥 Detectada" : "✅ No detectada"
     });
+
     // Limitar a los últimos 10 registros para que no se desborde la tabla
     if (historial.length > 10) {
         historial.shift();
     }
+
     // Actualizar la tabla
     actualizarTabla();
 }
@@ -1028,6 +1043,7 @@ function agregarRegistroHistorial(data) {
 function actualizarTabla() {
     let tabla = document.getElementById("historial-body");
     tabla.innerHTML = ""; // Limpiar la tabla antes de actualizar
+
     historial.forEach(registro => {
         let fila = `<tr>
             <td>${registro.tiempo}</td>
@@ -1171,6 +1187,7 @@ void manejarAlertas() {
       alerta = true;
       tiempoAlerta = nuevaAlerta ? tiempoActual : tiempoAlerta;
       esIncendio = (llamaDetectada && gasDetectado) || (llamaDetectada && tempAlta);
+
       if (esIncendio) {
           tiempoIncendio = tiempoActual;
           mensaje = "ALERTA: INCENDIO";
@@ -1226,6 +1243,7 @@ Task taskMedicion(1000, TASK_FOREVER, &tareaMedicion);
 // ========================== CONFIGURACIÓN INICIAL ==========================
 void setup() {
     Serial.begin(115200);
+
     // Conectar a WiFi
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
@@ -1235,16 +1253,19 @@ void setup() {
     Serial.println("Conectado a WiFi");
     Serial.print("IP: ");
     Serial.println(WiFi.localIP());
+
     // Configuración de pines de salida
     pinMode(BUZZER_SENSOR_PIN, OUTPUT);
     pinMode(LED_RED_PIN, OUTPUT);
     pinMode(LED_GREEN_PIN, OUTPUT);
     pinMode(FLAME_SENSOR_PIN, INPUT);
+
     // Inicialización de I2C y sensores
     Wire.begin(SDA_PIN, SCL_PIN);
     lcd.begin(16, 2);
     lcd.setBacklight(255);
     sensors.begin();
+
     // Mensaje de inicio en LCD
     lcd.setCursor(0, 0);
     lcd.print("Sistema Alerta");
@@ -1252,13 +1273,16 @@ void setup() {
     lcd.print("Iniciando...");
     delay(2000);
     lcd.clear();
+
     // ========================== SERVIDOR WEB ==========================
     // Ver el dashboard con gráficos
     server.on("/", HTTP_GET, []() {
         server.send(200, "text/html", htmlPage);
     });
+
     // Servir el archivo JavaScript
     server.on("/script.js", HTTP_GET, handleScriptJS);
+
     // Acceder a los datos en formato JSON
     server.on("/data", HTTP_GET, []() {
     String json = "{";
@@ -1270,6 +1294,8 @@ void setup() {
     json += "}";
     server.send(200, "application/json", json);
     });
+
+
     // Apagar la alarma desde la web
     server.on("/reset_alarm", HTTP_GET, []() {
         alarmaManualOff = true;  // Indicar que se apagó manualmente
