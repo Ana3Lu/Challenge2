@@ -100,12 +100,17 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 #### 1. Fiabilidad y Precisión
 - Se seleccionaron sensores adecuados para la detección confiable sobre temperatura, gases y llamas.
 - Se implementaron límites y filtros dentro del código para reducir errores y evitar falsas alarmas.
-- Se optimizó la adquisición de datos para minimizar bloqueos y garantizar mediciones en tiempo real.
+- Se optimizó la adquisición de datos mediante procesamiento concurrente, asegurando mediciones en tiempo real.
 
 #### 2. Autonomía y Eficiencia
 - El sistema es **autosuficiente**, operando sin necesidad de conexión a redes externas para su funcionamiento básico.
 - Su diseño es resistente a la intemperie, minimizando la necesidad de mantenimiento.
-- Se implementó una separación de tareas para permitir una ejecución fluida, evitando interrupciones en la adquisición de datos y la respuesta del sistema.
+- Se implementaron mecanismos de gestión de tareas para evitar interrupciones en la adquisición de datos y la respuesta del sistema.
+  - Inicialmente, se utilizó **TaskScheduler** para organizar la ejecución de tareas sin bloqueos dentro de un mismo hilo.
+  - Posteriormente, se implementó **FreeRTOS**, lo que permitió la creación de un segundo hilo y una mejor gestión del tiempo de ejecución de las tareas.
+- **Concurrencia en FreeRTOS:** La concurrencia permite que varias tareas se ejecuten de manera que parecen realizarse simultáneamente.
+  - Con **TaskScheduler**, las tareas compartían un solo hilo, ejecutándose en tiempos distintos sin bloquear el sistema, lo que es una forma de "pseudo-concurrencia".
+  - En cambio, con **FreeRTOS**, se creó un **segundo hilo**, lo que permite una gestión real de tareas en paralelo.
 
 #### 3. Interfaz de Usuario Intuitiva
 - Se usa una **pantalla LCD** para mostrar datos en tiempo real.
@@ -142,15 +147,18 @@ El código fue diseñado para gestionar tanto el sensor de temperatura como los 
 Para garantizar que el sistema desarrollado sea seguro, eficiente y cumpla con principios de calidad, se han aplicado diversos estándares de ingeniería en diferentes áreas del proyecto:
 
 #### 1. Sensores y Electrónica
-- **IEEE 1451**: Se siguieron principios de interoperabilidad para la integración de sensores en el sistema IoT, asegurando compatibilidad y escalabilidad.
-- **ISO 9001**: Se aplicaron criterios de calidad en la selección de componentes electrónicos y en la estructuración del proceso de desarrollo, priorizando confiabilidad y precisión.
+- **IEEE 1451:** Se siguieron principios de interoperabilidad para la integración de sensores en el sistema IoT, asegurando compatibilidad y escalabilidad.
+- **ISO 9001:** Se aplicaron criterios de calidad en la selección de componentes electrónicos, garantizando confiabilidad y precisión en las mediciones.
 
 #### 2. Programación y Software
-- **Arduino Coding Standards**:  Se adoptaron buenas prácticas en la escritura del código para mejorar la legibilidad, mantenibilidad y eficiencia del software en el ESP32.
-- **Optimización de la adquisición de datos:** Se implementó un mecanismo para gestionar la lectura de sensores sin bloquear otras funciones del sistema.
+- **Arduino Coding Standards:** Se adoptaron buenas prácticas en la escritura del código para mejorar la legibilidad, mantenibilidad y eficiencia del software en el ESP32.
+- **Optimización de adquisición de datos:** Se diseñó un mecanismo para gestionar la lectura de sensores sin interrumpir otras funciones críticas del sistema, alineado con buenas prácticas en programación de sistemas embebidos.
+- **Manejo de tareas concurrentes:**
+  - **TaskScheduler:** Se implementó inicialmente para administrar las lecturas de sensores y ejecutar tareas de manera periódica sin bloquear la ejecución del código principal.
+  - **FreeRTOS:** Se optó finalmente por este enfoque, permitiendo la creación de un segundo hilo de ejecución real, mejorando la capacidad de respuesta del sistema y optimizando el uso del procesador. Se gestionaron prioridades y tiempos de ejecución siguiendo los principios de sistemas en tiempo real.
 
 #### 3. Modelado y Documentación
-- **UML (ISO/IEC 19501)**: Se utilizaron diagramas UML para representar la estructura y el flujo de datos dentro del sistema, facilitando la organización y documentación del proyecto.
+- **UML (ISO/IEC 19501)**: Se utilizaron diagramas UML para representar la estructura del software y el flujo de datos dentro del sistema, facilitando la documentación y análisis del proyecto.
 
 ---
 
