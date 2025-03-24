@@ -133,6 +133,10 @@ Para que el sistema sea eficiente y funcional, se definieron los siguientes crit
 - Actualmente, la visualización remota de datos se realiza a través de una interfaz web local.
 - En futuras versiones, se podrían incorporar tecnologías IoT como MQTT para mejorar la comunicación y monitoreo en tiempo real.  
 
+
+### Diagrama UML
+
+
 ### Esquemático de Hardware
 
 En seguida, se muestra el diagrama que representa el Esquemático de Hardware de la solución planteada.
