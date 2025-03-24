@@ -237,10 +237,10 @@ El experimento se realizó en tres fases:
    - Se identificó que la latencia en la actualización del tablero se debe en parte a la estructura del código HTML/JavaScript y al manejo de tareas en el ESP32.
 
 <p align="justify"> 
-Inicialmente, la implementación física utilizó **TaskScheduler**, un método sencillo de gestión de tareas que permitió un funcionamiento estable del sistema sin bloqueos. Sin embargo, posteriormente se desarrolló una versión basada en **FreeRTOS**, la cual introduce el uso de hilos para gestionar el sensado en segundo plano, optimizando la eficiencia del sistema.
+Inicialmente, la implementación física utilizó TaskScheduler, un método sencillo de gestión de tareas que permitió un funcionamiento estable del sistema sin bloqueos. Sin embargo, posteriormente se desarrolló una versión basada en FreeRTOS, la cual introduce el uso de hilos para gestionar el sensado en segundo plano, optimizando la eficiencia del sistema.
 </p>
 <p align="justify"> 
-Aunque la implementación con **TaskScheduler** funcionó correctamente, **FreeRTOS** representa una mejora significativa en la administración de procesos concurrentes, permitiendo una ejecución más eficiente de las tareas críticas del sistema. Por esta razón, **FreeRTOS** se considera la solución preferida, aunque solo se haya validado en simulación hasta el momento en que se grabó el video de la validación del sistema.
+Aunque la implementación con TaskScheduler funcionó correctamente, FreeRTOS representa una mejora significativa en la administración de procesos concurrentes, permitiendo una ejecución más eficiente de las tareas críticas del sistema. Por esta razón, FreeRTOS se considera la solución preferida, aunque solo se haya validado en simulación hasta el momento en que se grabó el video de la validación del sistema.
 </p>
 
 ### Resultados y Análisis
@@ -273,6 +273,7 @@ Estos tiempos de respuesta cumplen con los requerimientos de un sistema de alert
 <p align="justify"> 
 Los resultados demuestran que el sistema es funcional para la detección temprana de incendios.  No obstante, se identificaron algunos aspectos a mejorar:
 </p>
+
 - **Optimización del consumo energético:** Se observó un consumo elevado cuando todos los actuadores estaban activos simultáneamente.
 - **Interferencias ambientales:** En entornos con humo denso, el sensor de gas MQ-2 presentó ligeras fluctuaciones en la lectura.
 - **Fiabilidad en campo abierto:** Se recomienda realizar pruebas en ubicaciones reales para evaluar el desempeño del sistema en condiciones de viento y humedad variables.
