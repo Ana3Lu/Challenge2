@@ -386,6 +386,7 @@ Para mejorar y escalar el sistema, se proponen las siguientes acciones:
 ## 8. Anexos
 
 ### Código fuente con FreeRTOS:
+```
 #include <WiFi.h>
 #include <WebServer.h>
 #include <Wire.h>
@@ -859,8 +860,9 @@ void loop() {
 
   delay(1000);  // Esperar 1000ms antes de la próxima iteración (1 segundo)
 }
-
+```
 ### Código fuente con TaskScheduler:
+```
 #include <WiFi.h>
 #include <WebServer.h>
 #include <Wire.h>
@@ -1322,3 +1324,4 @@ void loop() {
   actualizarLCD();                // Mostrar en LCD el estado actual
   manejarActuadores();            // Controlar los actuadores (LED y buzzer)
 }
+```
